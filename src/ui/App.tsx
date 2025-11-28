@@ -50,6 +50,29 @@ export function App() {
     } catch {}
   }, [highContrast])
 
+  // 導航收納狀態（已改為抽屜）
+  const [navCollapsed, setNavCollapsed] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('navCollapsed') === '1'
+    } catch {
+      return false
+    }
+  })
+
+  useEffect(() => {
+    try { localStorage.setItem('navCollapsed', navCollapsed ? '1' : '0') } catch {}
+  }, [navCollapsed])
+
+  // 抽屜開關
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(false)
+  useEffect(() => {
+    // 開啟抽屜時禁止 body 滾動
+    if (drawerOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+  }, [drawerOpen])
   const requestNotificationPermission = async () => {
     if ('Notification' in window) {
       const permission = await Notification.requestPermission()
@@ -82,13 +105,41 @@ export function App() {
           <div className="clock-time">{formatTime(currentTime)}</div>
           <div className="clock-date">{formatDate(currentTime)}</div>
         </div>
-        <nav>
-          <button className={route === 'dashboard' ? 'active' : ''} onClick={() => setRoute('dashboard')}>🏠 總覽</button>
-          <button className={route === 'calendar' ? 'active' : ''} onClick={() => setRoute('calendar')}>📅 日曆</button>
-          <button className={route === 'tasks' ? 'active' : ''} onClick={() => setRoute('tasks')}>✅ 代辦</button>
-          <button className={route === 'focus' ? 'active' : ''} onClick={() => setRoute('focus')}>🎮 專注</button>
-          <button className={route === 'notes' ? 'active' : ''} onClick={() => setRoute('notes')}>📝 備忘錄</button>
-          <button className={route === 'mood' ? 'active' : ''} onClick={() => setRoute('mood')}>📊 心情</button>
+        <button
+          className="nav-toggle"
+          onClick={() => setDrawerOpen(true)}
+          aria-expanded={drawerOpen}
+          title={drawerOpen ? '關閉選單' : '打開選單'}
+        >
+          ☰
+        </button>
+
+        {/* 原本的 topbar 按鈕列（保留，但不主要顯示） */}
+        <nav className={`main-nav ${navCollapsed ? 'collapsed' : 'expanded'}`}>
+          <button className={route === 'dashboard' ? 'active' : ''} onClick={() => setRoute('dashboard')} title="總覽">
+            <span className="nav-ico">🏠</span>
+            <span className="nav-label">總覽</span>
+          </button>
+          <button className={route === 'calendar' ? 'active' : ''} onClick={() => setRoute('calendar')} title="日曆">
+            <span className="nav-ico">📅</span>
+            <span className="nav-label">日曆</span>
+          </button>
+          <button className={route === 'tasks' ? 'active' : ''} onClick={() => setRoute('tasks')} title="代辦">
+            <span className="nav-ico">✅</span>
+            <span className="nav-label">代辦</span>
+          </button>
+          <button className={route === 'focus' ? 'active' : ''} onClick={() => setRoute('focus')} title="專注">
+            <span className="nav-ico">🎮</span>
+            <span className="nav-label">專注</span>
+          </button>
+          <button className={route === 'notes' ? 'active' : ''} onClick={() => setRoute('notes')} title="備忘錄">
+            <span className="nav-ico">📝</span>
+            <span className="nav-label">備忘錄</span>
+          </button>
+          <button className={route === 'mood' ? 'active' : ''} onClick={() => setRoute('mood')} title="心情">
+            <span className="nav-ico">📊</span>
+            <span className="nav-label">心情</span>
+          </button>
         </nav>
         {notificationPermission !== 'granted' && (
           <button onClick={requestNotificationPermission} className="notify-btn">🔔 啟用通知</button>
@@ -111,6 +162,41 @@ export function App() {
         {route === 'notes' && <NotesView />}
         {route === 'mood' && <MoodDashboard />}
       </main>
+
+      {/* 抽屜側欄 + 遮罩 */}
+      <div className={`drawer-overlay ${drawerOpen ? 'open' : ''}`} onClick={() => setDrawerOpen(false)} />
+      <aside className={`side-drawer ${drawerOpen ? 'open' : ''}`} aria-hidden={!drawerOpen}>
+        <div className="drawer-header">
+          <h3>選單</h3>
+          <button className="drawer-close" onClick={() => setDrawerOpen(false)} aria-label="關閉選單">✕</button>
+        </div>
+        <nav className="drawer-nav">
+          <button className={route === 'dashboard' ? 'active' : ''} onClick={() => { setRoute('dashboard'); setDrawerOpen(false) }}>
+            <span className="nav-ico">🏠</span>
+            <span className="nav-label">總覽</span>
+          </button>
+          <button className={route === 'calendar' ? 'active' : ''} onClick={() => { setRoute('calendar'); setDrawerOpen(false) }}>
+            <span className="nav-ico">📅</span>
+            <span className="nav-label">日曆</span>
+          </button>
+          <button className={route === 'tasks' ? 'active' : ''} onClick={() => { setRoute('tasks'); setDrawerOpen(false) }}>
+            <span className="nav-ico">✅</span>
+            <span className="nav-label">代辦</span>
+          </button>
+          <button className={route === 'focus' ? 'active' : ''} onClick={() => { setRoute('focus'); setDrawerOpen(false) }}>
+            <span className="nav-ico">🎮</span>
+            <span className="nav-label">專注</span>
+          </button>
+          <button className={route === 'notes' ? 'active' : ''} onClick={() => { setRoute('notes'); setDrawerOpen(false) }}>
+            <span className="nav-ico">📝</span>
+            <span className="nav-label">備忘錄</span>
+          </button>
+          <button className={route === 'mood' ? 'active' : ''} onClick={() => { setRoute('mood'); setDrawerOpen(false) }}>
+            <span className="nav-ico">📊</span>
+            <span className="nav-label">心情</span>
+          </button>
+        </nav>
+      </aside>
     </div>
   )
 }

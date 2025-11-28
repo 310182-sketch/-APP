@@ -340,6 +340,134 @@ body::after {
   transform: translateY(0) scale(0.98);
 }
 
+/* 導航收納樣式 */
+.topbar .nav-toggle {
+  appearance: none;
+  border: 0;
+  background: rgba(255,255,255,0.9);
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.topbar .main-nav {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.topbar .main-nav button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topbar .main-nav button .nav-ico { font-size: 1.05rem; }
+.topbar .main-nav button .nav-label { transition: opacity 180ms ease, width 180ms ease; }
+
+/* 收納：隱藏文字，只保留 icon（但保留 tooltip/title） */
+.topbar .main-nav.collapsed button .nav-label {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.topbar .main-nav.collapsed {
+  gap: 6px;
+}
+
+/* 展開時：確保文字可見 */
+.topbar .main-nav.expanded button .nav-label {
+  opacity: 1;
+  width: auto;
+}
+
+/* 小螢幕：把 nav 變成抽屜/底部導航（先前已有覆寫，但保留一致性） */
+@media (max-width: 480px) {
+  .topbar .nav-toggle { display: none; }
+  .topbar .main-nav { display: none; }
+  .topbar nav { display: flex; }
+}
+
+/* ===== 抽屜側邊選單樣式 ===== */
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 220ms ease, visibility 220ms ease;
+  z-index: 1200;
+}
+.drawer-overlay.open {
+  opacity: 1;
+  background: rgba(0,0,0,0.45);
+  visibility: visible;
+}
+
+.side-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  background: linear-gradient(180deg, #ffffff, #f8fafc);
+  box-shadow: 0 12px 40px rgba(2,6,23,0.35);
+  transform: translateX(-100%);
+  transition: transform 260ms cubic-bezier(.2,.9,.2,1);
+  z-index: 1300;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+.side-drawer.open {
+  transform: translateX(0);
+}
+
+.side-drawer .drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(15,23,42,0.06);
+}
+.side-drawer .drawer-close {
+  background: transparent;
+  border: 0;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.side-drawer .drawer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+.side-drawer .drawer-nav button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+.side-drawer .drawer-nav button.active {
+  background: rgba(30,58,47,0.08);
+  color: #0f172a;
+}
+.side-drawer .nav-ico { font-size: 1.2rem }
+
+/* 在窄螢幕下抽屜寬度調整 */
+@media (max-width: 420px) {
+  .side-drawer { width: 86vw; }
+}
+
 /* ===== Main Content ===== */
 .content {
   flex: 1;
@@ -4862,3 +4990,389 @@ section > h2 {
   color: #0f172a !important;
   text-shadow: 0 1px 2px rgba(255,255,255,0.8) !important;
 }
+
+/* ========================================
+   手機版優化 (Mobile First Enhancement)
+   ======================================== */
+@media (max-width: 480px) {
+  /* 頂部導航 - 更緊湊 */
+  .topbar {
+    padding: 12px 16px;
+    gap: 10px;
+  }
+  
+  .topbar h1 {
+    font-size: 1.25rem;
+  }
+  
+  /* 時鐘顯示 - 隱藏日期，只顯示時間 */
+  .clock-display {
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  .clock-display .clock-time {
+    font-size: 1rem;
+  }
+  
+  .clock-display .clock-date {
+    font-size: 0.75rem;
+    display: none;
+  }
+  
+  /* 導航 - 底部固定導航欄 */
+  .topbar nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    padding: 8px 12px;
+    gap: 4px;
+    justify-content: space-around;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+    z-index: 1000;
+  }
+  
+  .topbar nav button {
+    flex-direction: column;
+    padding: 8px 6px !important;
+    font-size: 0.65rem !important;
+    gap: 2px;
+    border: none !important;
+    background: transparent !important;
+    border-radius: 8px !important;
+  }
+  
+  .topbar nav button.active {
+    background: rgba(30, 58, 47, 0.1) !important;
+    color: #1e3a2f !important;
+  }
+  
+  /* 高對比/通知按鈕 - 縮小 */
+  .topbar > button.notify-btn {
+    padding: 6px 10px !important;
+    font-size: 0.7rem !important;
+  }
+  
+  /* 主內容區 - 增加底部空間給導航 */
+  .content {
+    padding: 12px;
+    padding-bottom: 80px;
+  }
+  
+  .content section {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  /* 標題 */
+  section > h2 {
+    font-size: 1.1rem !important;
+    padding: 6px 12px !important;
+  }
+  
+  /* Dashboard */
+  .dashboard-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .hero-row {
+    gap: 12px;
+  }
+  
+  .glass-card {
+    padding: 16px;
+  }
+  
+  .focus-hero .hero-label {
+    font-size: 0.85rem;
+  }
+  
+  .focus-hero .hero-task {
+    font-size: 1.1rem;
+  }
+  
+  .focus-hero .hero-btn {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+  
+  /* 寵物小工具 */
+  .pet-widget {
+    padding: 12px;
+  }
+  
+  .pet-widget-header {
+    font-size: 0.85rem;
+  }
+  
+  /* 統計卡片 */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px;
+  }
+  
+  .stat-card {
+    padding: 12px;
+  }
+  
+  .stat-card .stat-icon {
+    font-size: 1.5rem;
+  }
+  
+  .stat-card .stat-value {
+    font-size: 1.25rem;
+  }
+  
+  .stat-card .stat-label {
+    font-size: 0.7rem;
+  }
+  
+  /* 日曆 */
+  .calendar-nav {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .calendar-nav .nav-btn {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+  
+  .date-display input[type="date"] {
+    width: 100%;
+  }
+  
+  /* Apple 風格日視圖 */
+  .ac-body {
+    grid-template-columns: 50px 1fr;
+  }
+  
+  .ac-gutter-hour {
+    font-size: 0.7rem;
+    padding: 4px;
+  }
+  
+  .ac-event {
+    padding: 4px 6px;
+  }
+  
+  .ac-event-title {
+    font-size: 0.75rem;
+  }
+  
+  .ac-event-time {
+    font-size: 0.65rem;
+  }
+  
+  /* 專注模式 */
+  .focus-world {
+    min-height: 280px;
+    padding: 20px 16px;
+  }
+  
+  .focus-world .timer {
+    font-size: 2.8rem !important;
+  }
+  
+  .focus-world .companion {
+    font-size: 1rem !important;
+  }
+  
+  .focus-controls {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .focus-controls button {
+    width: 100%;
+    padding: 12px;
+  }
+  
+  /* Focus Hub 標籤 */
+  .focus-hub .tab-nav {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  
+  .focus-hub .tab-btn {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    flex: 1 1 auto;
+    min-width: 70px;
+  }
+  
+  /* 寵物面板 */
+  .pet-panel {
+    padding: 16px;
+  }
+  
+  .pet-stats {
+    grid-template-columns: 1fr !important;
+    gap: 8px;
+  }
+  
+  .pet-actions {
+    flex-direction: column;
+  }
+  
+  .pet-action-btn {
+    width: 100%;
+    padding: 12px;
+  }
+  
+  /* 商店 */
+  .shop-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+  }
+  
+  .shop-item-card {
+    padding: 12px;
+  }
+  
+  /* 背包 */
+  .bag-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px;
+  }
+  
+  .bag-item {
+    padding: 8px;
+  }
+  
+  /* 代辦事項 */
+  .tasks li {
+    padding: 12px;
+  }
+  
+  .tasks li label {
+    font-size: 0.9rem;
+  }
+  
+  /* 備忘錄 */
+  .notes-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+  
+  .note-card {
+    padding: 14px;
+  }
+  
+  /* 心情面板 */
+  .mood-card.main-mood {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .mood-big-emoji {
+    font-size: 4rem;
+  }
+  
+  .mood-stages .stages-list {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .stage-item {
+    padding: 10px;
+  }
+  
+  /* 睡眠目標滑桿 */
+  .time-slider-card {
+    padding: 16px;
+  }
+  
+  .ts-body {
+    flex-direction: column;
+  }
+  
+  .ts-time-label {
+    font-size: 1.5rem;
+  }
+  
+  /* 角色自訂 */
+  .character-customizer {
+    padding: 12px;
+  }
+  
+  .customizer-row {
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .color-options {
+    justify-content: flex-start;
+  }
+  
+  /* 滾動優化 */
+  .content {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* 觸控目標最小尺寸 */
+  button, 
+  input, 
+  select,
+  .pet-type-option,
+  .color-btn {
+    min-height: 44px;
+  }
+  
+  .color-btn {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* 中等螢幕 (平板) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .topbar nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .topbar nav button {
+    padding: 10px 14px !important;
+    font-size: 0.8rem !important;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  
+  .shop-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  .bag-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+  
+  .notes-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* 防止橫向時導航遮擋內容 */
+@media (max-width: 480px) and (orientation: landscape) {
+  .topbar nav {
+    padding: 6px 12px;
+  }
+  
+  .topbar nav button {
+    padding: 6px 8px !important;
+    font-size: 0.6rem !important;
+  }
+  
+  .content {
+    padding-bottom: 60px;
+  }
+}
+
