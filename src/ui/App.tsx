@@ -167,8 +167,11 @@ export function App() {
       <div className={`drawer-overlay ${drawerOpen ? 'open' : ''}`} onClick={() => setDrawerOpen(false)} />
       <aside className={`side-drawer ${drawerOpen ? 'open' : ''}`} aria-hidden={!drawerOpen}>
         <div className="drawer-header">
-          <h3>選單</h3>
+          <h3>FocusBuddy</h3>
           <button className="drawer-close" onClick={() => setDrawerOpen(false)} aria-label="關閉選單">✕</button>
+        </div>
+        <div className="drawer-search">
+          <input type="text" placeholder="🔍 搜尋功能..." aria-label="搜尋" />
         </div>
         <nav className="drawer-nav">
           <button className={route === 'dashboard' ? 'active' : ''} onClick={() => { setRoute('dashboard'); setDrawerOpen(false) }}>
@@ -196,6 +199,19 @@ export function App() {
             <span className="nav-label">心情</span>
           </button>
         </nav>
+        <div className="drawer-divider" />
+        <div className="drawer-footer">
+          <button onClick={() => setHighContrast(v => !v)} className="drawer-setting">
+            <span>{highContrast ? '🌓' : '🌗'}</span>
+            <span>{highContrast ? '高對比：開' : '高對比：關'}</span>
+          </button>
+          {notificationPermission !== 'granted' && (
+            <button onClick={requestNotificationPermission} className="drawer-setting">
+              <span>🔔</span>
+              <span>啟用通知</span>
+            </button>
+          )}
+        </div>
       </aside>
     </div>
   )
