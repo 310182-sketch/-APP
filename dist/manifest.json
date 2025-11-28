@@ -1,0 +1,19 @@
+{
+  "name": "FocusBuddy",
+  "short_name": "FocusBuddy",
+  "description": "吉卜力風格專注力工具 - 日曆、代辦、專注小遊戲",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#87CEEB",
+  "theme_color": "#87CEEB",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["productivity", "utilities"],
+  "lang": "zh-TW"
+}
