@@ -5810,3 +5810,167 @@ section > h2 {
   }
 }
 
+
+/* Spirit Plant Styles */
+.spirit-plant {
+  position: absolute;
+  bottom: 40px; /* Adjust based on character stage */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+.plant-emoji {
+  font-size: 80px;
+  line-height: 1;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+  animation: plant-breathe 3s infinite ease-in-out;
+}
+
+@keyframes plant-breathe {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50% { transform: scale(1.05) translateY(-2px); }
+}
+
+.spirit-plant.completed .plant-emoji {
+  animation: tree-sway 3s infinite ease-in-out;
+}
+
+@keyframes tree-sway {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
+/* Fruits */
+.fruits-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.fruit {
+  position: absolute;
+  font-size: 24px;
+  animation: fruit-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.fruit.f1 { top: 10px; left: 10px; animation-delay: 0.1s; }
+.fruit.f2 { top: 20px; right: 10px; animation-delay: 0.3s; }
+.fruit.f3 { top: -5px; left: 50%; transform: translateX(-50%); animation-delay: 0.5s; }
+
+@keyframes fruit-pop {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Kodama (Spirits) */
+.kodama {
+  position: absolute;
+  font-size: 24px;
+  opacity: 0.8;
+  filter: drop-shadow(0 0 5px rgba(255,255,255,0.8));
+  animation: kodama-float 4s infinite ease-in-out;
+}
+
+.kodama.k1 { bottom: 10px; left: -40px; animation-delay: 0s; }
+.kodama.k2 { bottom: 20px; right: -40px; animation-delay: 1s; }
+.kodama.k3 { top: -40px; left: 50%; animation-delay: 2s; }
+
+.kodama.happy {
+  animation: kodama-happy 1s infinite alternate;
+}
+
+@keyframes kodama-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.6; }
+  50% { transform: translateY(-10px) rotate(5deg); opacity: 0.9; }
+}
+
+@keyframes kodama-happy {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-15px) scale(1.2); }
+}
+
+/* Enhanced Spirit Plant Styles */
+.spirit-aura {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 40px;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 200, 0.6) 0%, rgba(255, 255, 200, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  animation: aura-pulse 3s infinite ease-in-out;
+}
+
+@keyframes aura-pulse {
+  0%, 100% { opacity: 0.3; transform: translateX(-50%) scale(0.8); }
+  50% { opacity: 0.6; transform: translateX(-50%) scale(1.2); }
+}
+
+.plant-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.plant-shadow {
+  position: absolute;
+  bottom: 5px;
+  width: 60%;
+  height: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  filter: blur(4px);
+  z-index: -1;
+}
+
+.spirit-particles {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 100px;
+  pointer-events: none;
+}
+
+.spirit-particles span {
+  position: absolute;
+  font-size: 12px;
+  opacity: 0;
+  animation: particle-float 3s infinite ease-in;
+}
+
+.spirit-particles .p1 { left: 20%; animation-delay: 0s; }
+.spirit-particles .p2 { left: 50%; animation-delay: 1s; }
+.spirit-particles .p3 { left: 80%; animation-delay: 2s; }
+
+@keyframes particle-float {
+  0% { transform: translateY(0) scale(0.5); opacity: 0; }
+  50% { opacity: 0.8; }
+  100% { transform: translateY(-60px) scale(1); opacity: 0; }
+}
+
+/* Character Stage Ground Enhancement */
+.character-stage::after {
+  content: '';
+  position: absolute;
+  bottom: 15px;
+  left: 10%;
+  right: 10%;
+  height: 25px;
+  background: radial-gradient(ellipse at center, rgba(50, 90, 50, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: 0;
+  pointer-events: none;
+}

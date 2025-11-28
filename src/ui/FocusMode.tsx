@@ -13,6 +13,7 @@ import {
   DEFAULT_NPC_APPEARANCES
 } from './Character'
 import { PetPanel, PetDisplay, PetData, getPetMood } from './Pet'
+import { SpiritPlant } from './SpiritPlant'
 
 type WeatherKey = 'sunny'|'cloudy'|'rain'|'storm'
 const WEATHER: {key: WeatherKey, label: string}[] = [
@@ -63,7 +64,7 @@ export function FocusMode() {
   const [weatherMode, setWeatherMode] = useState<'auto'|'preference'>('auto')
   const [currentTimeOfDay, setCurrentTimeOfDay] = useState('morning')
   const [isRestTime, setIsRestTime] = useState(false)
-  const [allowFreeFocus, setAllowFreeFocus] = useState(false)
+  const [allowFreeFocus, setAllowFreeFocus] = useState(true)
   const [currentTask, setCurrentTask] = useState<string | null>(null)
   const [nextTaskInfo, setNextTaskInfo] = useState<string | null>(null)
   // Hub 分頁
@@ -84,6 +85,7 @@ export function FocusMode() {
   // 寵物系統
   const [focusXpForPet, setFocusXpForPet] = useState(0)
   const [showPetPanel, setShowPetPanel] = useState(true)
+  const [showHarvest, setShowHarvest] = useState(false)
   const [pet, setPet] = useState<PetData | null>(() => {
     const saved = localStorage.getItem('myPet')
     return saved ? JSON.parse(saved) : null
@@ -411,7 +413,12 @@ export function FocusMode() {
           setLastXp(data.session.xpGained)
           // 餵食寵物！
           setFocusXpForPet(data.session.xpGained)
-          alert(`專注完成！獲得 ${data.session.xpGained} XP，已餵食你的寵物！🍖`)
+          
+          // 觸發靈魂之樹收成
+          setShowHarvest(true)
+          setTimeout(() => setShowHarvest(false), 8000)
+
+          alert(`專注完成！獲得 ${data.session.xpGained} XP，靈魂之樹結出了果實！🍎\n寵物也吃得很開心！`)
           // 重新載入統計/角色/歷史
           loadTotalXp()
           loadHistory()
@@ -480,6 +487,9 @@ export function FocusMode() {
     })
     alert('已套用到寵物！')
   }
+
+  const totalSeconds = focusMinutes * 60
+  const currentProgress = running ? Math.max(0, 1 - (seconds / totalSeconds)) : (showHarvest ? 1 : 0)
 
   return (
     <section className="focus-hub">
@@ -602,6 +612,9 @@ export function FocusMode() {
                   size={120}
                 />
               </div>
+              {((running) || showHarvest) && (
+                <SpiritPlant progress={currentProgress} isCompleted={showHarvest} />
+              )}
               {pet && (
                 <div className="pet-in-scene">
                   <PetDisplay 
@@ -613,12 +626,12 @@ export function FocusMode() {
               )}
             </div>
             <div className="companion">
-              {currentTask ? `正在執行：${currentTask}` : '角色正在休息... 💤'}
+              {running ? `專注中 🌱` : (currentTask ? `正在執行：${currentTask}` : '準備開始專注吧！💪')}
             </div>
             {pet && <p className="hint">🐾 {pet.name} 正在陪伴你專注！完成後會獲得食物獎勵</p>}
             {nextTaskInfo && <p className="hint">下個任務：{nextTaskInfo}</p>}
             {lastXp != null && <p className="hint">上次獲得 XP：{lastXp}</p>}
-            {isRestTime && <div className="rest-overlay">現在是休息時間或未排程 ☕</div>}
+            {isRestTime && !allowFreeFocus && !running && <div className="rest-overlay">現在是休息時間或未排程 ☕</div>}
           </div>
         </div>
       )}
