@@ -12,14 +12,8 @@ export function App() {
   const [route, setRoute] = useState<RouteType>('dashboard')
   const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>('default')
   const [currentTime, setCurrentTime] = useState(new Date())
-  const [highContrast, setHighContrast] = useState<boolean>(() => {
-    try {
-      const saved = localStorage.getItem('highContrast')
-      return saved === 'true'
-    } catch {
-      return false
-    }
-  })
+  // 永遠使用高對比模式
+  const highContrast = true
 
   useEffect(() => {
     // Register Service Worker
@@ -42,13 +36,10 @@ export function App() {
     return () => clearInterval(clockTimer)
   }, [])
 
-  // 同步高對比模式到 <html> 類別
+  // 永遠啟用高對比模式
   useEffect(() => {
-    document.documentElement.classList.toggle('high-contrast', highContrast)
-    try {
-      localStorage.setItem('highContrast', String(highContrast))
-    } catch {}
-  }, [highContrast])
+    document.documentElement.classList.add('high-contrast')
+  }, [])
 
   // 導航收納狀態（已改為抽屜）
   const [navCollapsed, setNavCollapsed] = useState<boolean>(() => {
@@ -144,14 +135,6 @@ export function App() {
         {notificationPermission !== 'granted' && (
           <button onClick={requestNotificationPermission} className="notify-btn">🔔 啟用通知</button>
         )}
-        <button
-          onClick={() => setHighContrast(v => !v)}
-          className="notify-btn"
-          aria-pressed={highContrast}
-          title="切換高對比模式"
-        >
-          {highContrast ? '🌓 高對比：開' : '🌗 高對比：關'}
-        </button>
       </header>
 
       <main className="content">
@@ -201,10 +184,6 @@ export function App() {
         </nav>
         <div className="drawer-divider" />
         <div className="drawer-footer">
-          <button onClick={() => setHighContrast(v => !v)} className="drawer-setting">
-            <span>{highContrast ? '🌓' : '🌗'}</span>
-            <span>{highContrast ? '高對比：開' : '高對比：關'}</span>
-          </button>
           {notificationPermission !== 'granted' && (
             <button onClick={requestNotificationPermission} className="drawer-setting">
               <span>🔔</span>
