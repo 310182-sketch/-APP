@@ -5,8 +5,9 @@ import { FocusMode } from './FocusMode'
 import { MoodDashboard } from './MoodDashboard'
 import { DashboardView } from './DashboardView'
 import { NotesView } from './NotesView'
+import { FeatureGuide } from './FeatureGuide'
 
-type RouteType = 'dashboard' | 'calendar' | 'tasks' | 'focus' | 'mood' | 'notes'
+type RouteType = 'dashboard' | 'calendar' | 'tasks' | 'focus' | 'mood' | 'notes' | 'guide'
 
 export function App() {
   const [route, setRoute] = useState<RouteType>('dashboard')
@@ -131,6 +132,10 @@ export function App() {
             <span className="nav-ico">📊</span>
             <span className="nav-label">心情</span>
           </button>
+          <button className={route === 'guide' ? 'active' : ''} onClick={() => setRoute('guide')} title="說明">
+            <span className="nav-ico">📖</span>
+            <span className="nav-label">說明</span>
+          </button>
         </nav>
         {notificationPermission !== 'granted' && (
           <button onClick={requestNotificationPermission} className="notify-btn">🔔 啟用通知</button>
@@ -144,6 +149,7 @@ export function App() {
         {route === 'focus' && <FocusMode />}
         {route === 'notes' && <NotesView />}
         {route === 'mood' && <MoodDashboard />}
+        {route === 'guide' && <FeatureGuide />}
       </main>
 
       {/* 抽屜側欄 + 遮罩 */}
@@ -180,6 +186,10 @@ export function App() {
           <button className={route === 'mood' ? 'active' : ''} onClick={() => { setRoute('mood'); setDrawerOpen(false) }}>
             <span className="nav-ico">📊</span>
             <span className="nav-label">心情</span>
+          </button>
+          <button className={route === 'guide' ? 'active' : ''} onClick={() => { setRoute('guide'); setDrawerOpen(false) }}>
+            <span className="nav-ico">📖</span>
+            <span className="nav-label">說明</span>
           </button>
         </nav>
         <div className="drawer-divider" />

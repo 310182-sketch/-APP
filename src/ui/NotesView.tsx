@@ -232,7 +232,7 @@ export function NotesView() {
     <section className="notes-view-v2">
       {/* 頂部工具列 */}
       <div className="notes-header-v2">
-        <h2>📝 備忘錄</h2>
+        <h2 className="heading-2">📝 備忘錄</h2>
         <div className="notes-controls">
           <div className="search-box-v2">
             <span>🔍</span>

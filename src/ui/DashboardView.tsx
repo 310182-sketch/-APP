@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { HOLIDAY_SLOTS, WEEKDAY_SLOTS } from '../lib/constants'
 import { getMoodFromXP, getMoodEmoji, getMoodLabel } from './Character'
 import { PetDisplay, PetData } from './Pet'
+import { tasksAPI, eventsAPI, scheduleAPI, focusAPI } from '../lib/api'
 
 interface TaskItem {
   id: string
@@ -271,24 +272,20 @@ export function DashboardView({ onNavigate }: DashboardProps) {
   const loadData = async () => {
     try {
       // 載入任務
-      const tasksRes = await fetch('/api/tasks')
-      const tasksData = await tasksRes.json()
+      const tasksData = await tasksAPI.getTasks()
       setTasks(tasksData.tasks || [])
 
       // 載入今日事件
       const dateStr = today.toISOString().slice(0, 10)
-      const eventsRes = await fetch(`/api/calendar?date=${dateStr}`)
-      const eventsData = await eventsRes.json()
+      const eventsData = await eventsAPI.getEvents(dateStr)
       setEvents(eventsData.events || [])
 
       // 載入排程
-      const scheduleRes = await fetch('/api/schedule?userId=demo')
-      const scheduleData = await scheduleRes.json()
+      const scheduleData = await scheduleAPI.getSchedule('demo')
       setSchedule(scheduleData.schedule || {})
 
       // 載入 XP
-      const statsRes = await fetch('/api/focus/stats?userId=demo')
-      const statsData = await statsRes.json()
+      const statsData = await focusAPI.getStats('demo')
       setWeeklyXp(statsData.weeklyXp || 0)
 
       // 載入寵物
@@ -336,11 +333,7 @@ export function DashboardView({ onNavigate }: DashboardProps) {
     <section className="dashboard-grid">
       {/* Header Area */}
       <div className="dashboard-header">
-        <h2 style={{ 
-          color: '#ffffff', 
-          textShadow: '0 2px 8px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.4)',
-          fontWeight: 700
-        }}>
+        <h2 className="heading-1">
           👋 早安，準備好開始了嗎？
         </h2>
       </div>

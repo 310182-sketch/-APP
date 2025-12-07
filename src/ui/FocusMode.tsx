@@ -14,6 +14,8 @@ import {
 } from './Character'
 import { PetPanel, PetDisplay, PetData, getPetMood } from './Pet'
 import { SpiritPlant } from './SpiritPlant'
+import { ParticleSystem } from './ParticleSystem'
+import { scheduleAPI, focusAPI, characterAPI } from '../lib/api'
 
 type WeatherKey = 'sunny'|'cloudy'|'rain'|'storm'
 const WEATHER: {key: WeatherKey, label: string}[] = [
@@ -151,8 +153,7 @@ export function FocusMode() {
   // 讀取排程
   const loadSchedule = async () => {
     try {
-      const res = await fetch('/api/schedule?userId=demo')
-      const data = await res.json()
+      const data = await scheduleAPI.getSchedule('demo')
       setSchedule(data.schedule || {})
     } catch { setSchedule({}) }
   }
@@ -160,8 +161,7 @@ export function FocusMode() {
   // 讀取總 XP
   const loadTotalXp = async () => {
     try {
-      const res = await fetch('/api/focus/stats?userId=demo')
-      const data = await res.json()
+      const data = await focusAPI.getStats('demo')
       setTotalXp(data.weeklyXp || 0)
     } catch { setTotalXp(0) }
   }
@@ -191,16 +191,14 @@ export function FocusMode() {
 
   const loadHistory = async () => {
     try {
-      const res = await fetch(`/api/focus/history?userId=${userId}&limit=30`)
-      const data = await res.json()
+      const data = await focusAPI.getHistory(userId, 30)
       setHistory({ sessions: data.sessions || [], streakDays: data.streakDays || 0, totalCompleted: data.totalCompleted || 0 })
     } catch {}
   }
 
   const loadCharacter = async () => {
     try {
-      const res = await fetch(`/api/character?userId=${userId}`)
-      const data = await res.json()
+      const data = await characterAPI.getCharacter(userId)
       setCharacter(data)
     } catch {}
   }
@@ -253,7 +251,7 @@ export function FocusMode() {
         if (!task || task === '睡覺') {
           setIsRestTime(true)
           setCurrentTask(null)
-          if (running) stop()
+          if (running && !allowFreeFocus) stop()
         } else {
           setIsRestTime(false)
           setCurrentTask(task)
@@ -262,7 +260,7 @@ export function FocusMode() {
         // 不在任何 Slot 內 -> 休息時間
         setIsRestTime(true)
         setCurrentTask(null)
-        if (running) stop()
+        if (running && !allowFreeFocus) stop()
       }
 
       // 2. 提醒邏輯 (簡化版：檢查下一個 Slot)
@@ -309,7 +307,7 @@ export function FocusMode() {
     const timer = setInterval(checkStatus, 10000) // 每 10 秒檢查一次
     checkStatus()
     return () => clearInterval(timer)
-  }, [timeSlots, isHoliday, running, schedule])
+  }, [timeSlots, isHoliday, running, schedule, allowFreeFocus])
 
   const notify = (title: string, body: string) => {
     if (!('Notification' in window)) return
@@ -383,11 +381,7 @@ export function FocusMode() {
     setSeconds(focusMinutes * 60)
     await initAudio()
     try {
-      const res = await fetch('/api/focus/start', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: 'demo', weather })
-      })
-      const data = await res.json()
+      const data = await focusAPI.startSession('demo', weather)
       setSessionId(data.session?.id || null)
     } catch {}
     setRunning(true)
@@ -404,11 +398,7 @@ export function FocusMode() {
     try { document.exitFullscreen?.() } catch {}
     if (sessionId) {
       try {
-        const res = await fetch('/api/focus/stop', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ sessionId })
-        })
-        const data = await res.json()
+        const data = await focusAPI.stopSession(sessionId)
         if (data.session?.xpGained != null) {
           setLastXp(data.session.xpGained)
           // 餵食寵物！
@@ -464,11 +454,7 @@ export function FocusMode() {
       return
     }
     try {
-      const res = await fetch('/api/character/unlock', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, item: itemId })
-      })
-      const data = await res.json()
+      const data = await characterAPI.unlockItem(userId, itemId)
       setCharacter(data.character)
       alert(`已解鎖：${item?.name}`)
     } catch {}
@@ -592,6 +578,7 @@ export function FocusMode() {
           </div>
 
           <div className={`focus-world focus-${weather} ${solidBg ? 'solid-bg' : ''}`} style={solidBg ? undefined : { background: currentBg }}>
+            <ParticleSystem weather={weather} mood={mood} isRunning={running} />
             <div className="timer">{mm}:{ss}</div>
             <div className="character-stage">
               {Array.from({ length: npcCount }).map((_, i) => (

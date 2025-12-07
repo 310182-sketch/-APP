@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { HOLIDAY_SLOTS, WEEKDAY_SLOTS } from '../lib/constants'
+import { tasksAPI, scheduleAPI } from '../lib/api'
 
 interface TaskItem {
   id: string
@@ -18,42 +19,34 @@ export function TasksView() {
   const timeSlots = isHoliday ? HOLIDAY_SLOTS : WEEKDAY_SLOTS
 
   const load = async () => {
-    const res = await fetch('/api/tasks')
-    const data = await res.json()
+    const data = await tasksAPI.getTasks()
     setTasks(data.tasks || [])
 
-    const resSch = await fetch('/api/schedule?userId=demo')
-    const dataSch = await resSch.json()
+    const dataSch = await scheduleAPI.getSchedule('demo')
     setSchedule(dataSch.schedule || {})
   }
   const addTask = async () => {
     if (!title.trim()) return
-    await fetch('/api/tasks', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title })
-    })
+    await tasksAPI.createTask(title)
     setTitle('')
     load()
   }
   const toggle = async (id: string) => {
-    await fetch(`/api/tasks/${id}/toggle`, { method: 'POST' })
+    await tasksAPI.toggleTask(id)
     load()
   }
 
   const assignTask = async (slotIdx: number, taskTitle: string) => {
     const newSchedule = { ...schedule, [`${isHoliday ? 'h' : 'w'}-${slotIdx}`]: taskTitle }
     setSchedule(newSchedule)
-    await fetch('/api/schedule', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: 'demo', schedule: newSchedule })
-    })
+    await scheduleAPI.saveSchedule('demo', newSchedule)
   }
 
   useEffect(() => { load() }, [])
 
   return (
     <section>
-      <h2>代辦清單（依時間格）</h2>
+      <h2 className="heading-2">✅ 代辦清單（依時間格）</h2>
       <div className="row">
         <label>
           模式：

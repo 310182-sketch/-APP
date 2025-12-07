@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react'
+import { eventsAPI } from '../lib/api'
 
 interface EventItem {
   id: string
@@ -28,8 +29,7 @@ export function CalendarView() {
 
   const load = async (d: string) => {
     try {
-      const res = await fetch(`/api/calendar?date=${encodeURIComponent(d)}`)
-      const data = await res.json()
+      const data = await eventsAPI.getEvents(d)
       setEvents(data.events || [])
     } catch (e) {
       console.error('載入事件失敗', e)
@@ -46,11 +46,7 @@ export function CalendarView() {
     const end = `${date}T${newEvent.endHour.padStart(2, '0')}:${newEvent.endMin.padStart(2, '0')}`
     
     try {
-      await fetch('/api/events', {
-        method: 'POST', 
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: newEvent.title, start, end })
-      })
+      await eventsAPI.createEvent({ title: newEvent.title, start, end })
       
       // 重置表單
       setNewEvent({ title: '', startHour: '10', startMin: '00', endHour: '11', endMin: '00' })
@@ -58,14 +54,14 @@ export function CalendarView() {
       load(date)
     } catch (e) {
       console.error('新增事件失敗', e)
-      alert('新增失敗，請檢查伺服器')
+      alert('新增失敗')
     }
   }
 
   const onDeleteEvent = async (id: string) => {
     if (!confirm('確定要刪除此事件嗎？')) return
     try {
-      await fetch(`/api/events/${id}`, { method: 'DELETE' })
+      await eventsAPI.deleteEvent(id)
       load(date)
     } catch (e) {
       console.error('刪除事件失敗', e)
@@ -149,16 +145,7 @@ export function CalendarView() {
 
   return (
     <section>
-      <h2 style={{ 
-        color: '#0f172a', 
-        textShadow: '0 1px 2px rgba(255,255,255,0.8)',
-        fontWeight: 700,
-        background: 'rgba(255,255,255,0.9)',
-        padding: '8px 16px',
-        borderRadius: '8px',
-        display: 'inline-block',
-        marginBottom: '16px'
-      }}>📅 日曆</h2>
+      <h2 className="heading-2">📅 日曆</h2>
       
       {/* 日期導航 */}
       <div className="calendar-nav">

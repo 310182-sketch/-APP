@@ -1,0 +1,332 @@
+/* Material Design 3 Theme */
+
+:root {
+  --md-sys-color-primary: #6750a4;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #eaddff;
+  --md-sys-color-on-primary-container: #21005d;
+  
+  --md-sys-color-secondary: #625b71;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #e8def8;
+  --md-sys-color-on-secondary-container: #1d192b;
+  
+  --md-sys-color-tertiary: #7d5260;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #ffd8e4;
+  --md-sys-color-on-tertiary-container: #31111d;
+
+  --md-sys-color-surface: #fdf8fd;
+  --md-sys-color-surface-container: #f3edf7;
+  --md-sys-color-on-surface: #1c1b1f;
+  --md-sys-color-outline: #79747e;
+  
+  --md-sys-elevation-1: 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+  --md-sys-elevation-2: 0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+  --md-sys-elevation-3: 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.3);
+  
+  --md-sys-shape-corner-small: 8px;
+  --md-sys-shape-corner-medium: 12px;
+  --md-sys-shape-corner-large: 16px;
+  --md-sys-shape-corner-extra-large: 28px;
+}
+
+body {
+  background: var(--md-sys-color-surface) !important;
+  color: var(--md-sys-color-on-surface) !important;
+  font-family: 'Roboto', 'Inter', system-ui, sans-serif;
+}
+
+/* Reset Nano/Glass styles & Apply Material Card */
+.glass-card, .focus-hero, .pet-widget, .stat-item, .upcoming-panel, .events-panel, .tasks-panel, .time-slider-card, .note-card, .shop-item-card, .bag-item {
+  background: #fff !important;
+  backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: var(--md-sys-elevation-1) !important;
+  border-radius: var(--md-sys-shape-corner-medium) !important;
+  color: var(--md-sys-color-on-surface) !important;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  margin-bottom: 0;
+}
+
+.glass-card:hover, .stat-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--md-sys-elevation-2) !important;
+}
+
+/* Topbar (AppBar) */
+.topbar {
+  background: var(--md-sys-color-surface-container) !important;
+  color: var(--md-sys-color-on-surface) !important;
+  box-shadow: var(--md-sys-elevation-2) !important;
+  border-bottom: none !important;
+  margin-bottom: 16px;
+  border-radius: 0 0 16px 16px;
+  padding: 12px 24px !important;
+}
+
+.topbar h1 {
+  font-weight: 400;
+  font-size: 1.375rem;
+  color: var(--md-sys-color-on-surface) !important;
+  text-shadow: none !important;
+  font-family: inherit !important;
+  letter-spacing: normal !important;
+}
+
+/* Buttons (Filled) */
+button, .hero-btn, .save-btn, .add-event-btn, .ts-btn {
+  background: var(--md-sys-color-primary) !important;
+  color: var(--md-sys-color-on-primary) !important;
+  border-radius: var(--md-sys-shape-corner-extra-large) !important;
+  border: none !important;
+  box-shadow: var(--md-sys-elevation-1);
+  text-transform: none;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+  padding: 10px 24px !important;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, background 0.2s ease;
+}
+
+button:hover, .hero-btn:hover, .save-btn:hover {
+  box-shadow: var(--md-sys-elevation-2) !important;
+  background: #523e8a !important;
+  transform: none !important;
+}
+
+/* Secondary/Text Buttons */
+.cancel-btn, .nav-btn, .today-btn, .text-btn {
+  background: transparent !important;
+  color: var(--md-sys-color-primary) !important;
+  border: 1px solid var(--md-sys-color-outline) !important;
+  box-shadow: none !important;
+}
+
+.cancel-btn:hover, .nav-btn:hover, .today-btn:hover {
+  background: rgba(103, 80, 164, 0.08) !important;
+  border-color: var(--md-sys-color-primary) !important;
+}
+
+/* Navigation Buttons in Topbar */
+.topbar nav button, .topbar > button {
+  background: transparent !important;
+  color: var(--md-sys-color-on-surface) !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: var(--md-sys-shape-corner-extra-large) !important;
+  padding: 8px 16px !important;
+}
+
+.topbar nav button:hover, .topbar > button:hover {
+  background: var(--md-sys-color-secondary-container) !important;
+  color: var(--md-sys-color-on-secondary-container) !important;
+  transform: none !important;
+}
+
+.topbar nav button.active {
+  background: var(--md-sys-color-secondary-container) !important;
+  color: var(--md-sys-color-on-secondary-container) !important;
+  font-weight: 600;
+}
+
+/* Dashboard Header */
+.dashboard-header h2 {
+  color: var(--md-sys-color-on-surface) !important;
+  text-shadow: none !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+  font-family: inherit !important;
+  font-weight: 400;
+  font-size: 2rem;
+}
+
+/* Focus Hero */
+.focus-hero {
+  background: var(--md-sys-color-primary-container) !important;
+  color: var(--md-sys-color-on-primary-container) !important;
+}
+.focus-hero .hero-label {
+  background: var(--md-sys-color-primary) !important;
+  color: var(--md-sys-color-on-primary) !important;
+  border: none !important;
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+.focus-hero .hero-task {
+  color: var(--md-sys-color-on-primary-container) !important;
+  font-family: inherit !important;
+  font-weight: 400;
+}
+.focus-hero .hero-btn {
+  background: var(--md-sys-color-primary) !important;
+  color: var(--md-sys-color-on-primary) !important;
+  border: none !important;
+  box-shadow: var(--md-sys-elevation-1) !important;
+}
+
+/* Calendar */
+.apple-cal .ac-body {
+  border: 1px solid var(--md-sys-color-outline) !important;
+  background: #fff !important;
+  border-radius: var(--md-sys-shape-corner-medium) !important;
+}
+.apple-cal .ac-gutter {
+  background: #fff !important;
+  border-right: 1px solid #e0e0e0 !important;
+}
+.apple-cal .ac-gutter-hour {
+  color: var(--md-sys-color-on-surface) !important;
+  font-weight: 400;
+}
+.apple-cal .ac-hour-line {
+  background: #e0e0e0 !important;
+  opacity: 1 !important;
+}
+.apple-cal .ac-event {
+  background: var(--md-sys-color-tertiary-container) !important;
+  color: var(--md-sys-color-on-tertiary-container) !important;
+  border: none !important;
+  border-left: 4px solid var(--md-sys-color-tertiary) !important;
+  border-radius: 4px !important;
+  box-shadow: var(--md-sys-elevation-1) !important;
+}
+.apple-cal .ac-event-title {
+  color: var(--md-sys-color-on-tertiary-container) !important;
+  font-weight: 500;
+}
+.apple-cal .ac-event-time {
+  color: var(--md-sys-color-on-tertiary-container) !important;
+  opacity: 0.8;
+}
+
+/* Tasks */
+.tasks li {
+  background: #fff !important;
+  border: 1px solid #e0e0e0 !important;
+  box-shadow: none !important;
+  border-radius: var(--md-sys-shape-corner-medium) !important;
+  margin-bottom: 8px;
+}
+.tasks li:hover {
+  background: #f5f5f5 !important;
+  transform: none !important;
+}
+.tasks li input[type="checkbox"] {
+  accent-color: var(--md-sys-color-primary);
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
+  border: 2px solid var(--md-sys-color-outline);
+}
+
+/* Inputs */
+input[type="text"], input[type="date"], select, .ts-quote-input {
+  background: #f1f3f4 !important;
+  border: none !important;
+  border-bottom: 2px solid var(--md-sys-color-outline) !important;
+  border-radius: 4px 4px 0 0 !important;
+  padding: 12px 16px !important;
+  transition: background 0.2s, border-color 0.2s;
+  font-family: inherit;
+}
+input[type="text"]:focus, input[type="date"]:focus, select:focus, .ts-quote-input:focus {
+  background: #e8e8e8 !important;
+  border-bottom-color: var(--md-sys-color-primary) !important;
+  box-shadow: none !important;
+  outline: none;
+}
+
+/* Side Drawer */
+.side-drawer {
+  background: var(--md-sys-color-surface) !important;
+  border-right: none !important;
+  box-shadow: var(--md-sys-elevation-2);
+}
+.side-drawer .drawer-header {
+  border-bottom: 1px solid #e0e0e0 !important;
+}
+.side-drawer .drawer-nav button.active {
+  background: var(--md-sys-color-secondary-container) !important;
+  color: var(--md-sys-color-on-secondary-container) !important;
+  border-radius: 24px;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Focus World */
+.focus-world {
+  background: #fff !important;
+  border: none !important;
+  box-shadow: var(--md-sys-elevation-1) !important;
+  border-radius: var(--md-sys-shape-corner-large) !important;
+}
+.focus-world .timer {
+  color: var(--md-sys-color-primary);
+  text-shadow: none !important;
+  font-family: inherit !important;
+  font-weight: 300;
+}
+.focus-world button {
+  background: var(--md-sys-color-tertiary) !important;
+  color: var(--md-sys-color-on-tertiary) !important;
+  border: none !important;
+  box-shadow: var(--md-sys-elevation-2) !important;
+}
+.focus-world button:hover {
+  transform: scale(1.05);
+  box-shadow: var(--md-sys-elevation-3) !important;
+}
+
+/* Time Slider */
+.ts-track {
+  background: #e0e0e0 !important;
+  border: none !important;
+}
+.ts-thumb {
+  background: var(--md-sys-color-primary) !important;
+  border: 2px solid #fff !important;
+  box-shadow: var(--md-sys-elevation-1) !important;
+}
+
+/* Mood & XP */
+.mood-indicator {
+  background: #fff !important;
+  border: 1px solid #e0e0e0 !important;
+  box-shadow: none !important;
+}
+.xp-bar {
+  background: #e0e0e0 !important;
+  border: none !important;
+  height: 8px;
+}
+.xp-bar-fill {
+  border-right: none !important;
+  background: var(--md-sys-color-primary) !important;
+}
+
+/* Pet Widget */
+.pet-status-badge {
+  background: var(--md-sys-color-secondary-container) !important;
+  color: var(--md-sys-color-on-secondary-container) !important;
+}
+
+/* Headers */
+h2, h3, h4 {
+  color: var(--md-sys-color-on-surface) !important;
+  text-shadow: none !important;
+}
+
+/* Mood Colors */
+.xp-bar-fill.anxious { background: #ef4444 !important; }
+.xp-bar-fill.calm { background: #3b82f6 !important; }
+.xp-bar-fill.happy { background: #10b981 !important; }
+.xp-bar-fill.excited { background: #ec4899 !important; }
+
+/* Mood Text Colors */
+.xp-text-anxious { color: #ef4444 !important; }
+.xp-text-calm { color: #3b82f6 !important; }
+.xp-text-happy { color: #10b981 !important; }
+.xp-text-excited { color: #ec4899 !important; }

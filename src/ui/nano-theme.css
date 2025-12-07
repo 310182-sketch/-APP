@@ -1,0 +1,424 @@
+/* Nano Banana Theme & Layout Optimization */
+
+:root {
+  --nano-bg: #f8fafc;
+  --nano-card-bg: #ffffff;
+  --nano-border: #1e293b;
+  --nano-accent: #f1c40f; /* Street Yellow */
+  --nano-punk: #c41e3a;   /* Punk Red */
+  --nano-text: #0f172a;
+  --nano-radius: 12px;
+  --nano-shadow: 4px 4px 0px var(--nano-border);
+}
+
+/* Global Layout Fixes */
+.app {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+.content {
+  padding: 24px;
+  max-width: 1400px; /* Wider on large screens */
+}
+
+/* Dashboard Grid Optimization */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  width: 100%;
+}
+
+/* Hero Row - Better Proportions */
+.hero-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  min-height: 240px;
+}
+
+/* Stats Grid - Responsive */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+/* Content Split - Better Balance */
+.content-split {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Nano Banana Card Style (Overrides glass-card) */
+.glass-card {
+  background: var(--nano-card-bg);
+  border: 2px solid var(--nano-border);
+  border-radius: var(--nano-radius);
+  box-shadow: var(--nano-shadow);
+  backdrop-filter: none; /* Remove blur for sharper look */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.glass-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--nano-border);
+  background: #fff;
+}
+
+/* Typography & Headers */
+.dashboard-header h2 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--nano-text) !important; /* Override inline styles */
+  text-shadow: none !important;
+  background: var(--nano-accent);
+  display: inline-block;
+  padding: 8px 16px;
+  border: 2px solid var(--nano-border);
+  border-radius: 8px;
+  box-shadow: 4px 4px 0px var(--nano-border);
+  transform: rotate(-1deg);
+}
+
+/* Hero Card Specifics */
+.focus-hero {
+  background: linear-gradient(135deg, #fff 0%, #f1f5f9 100%);
+}
+
+.hero-label {
+  background: var(--nano-punk);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  font-size: 0.8rem;
+  border: 1px solid var(--nano-border);
+}
+
+.hero-task {
+  font-family: 'Courier New', monospace; /* Code/Tech vibe */
+  font-weight: 700;
+}
+
+.hero-btn {
+  background: var(--nano-border);
+  color: var(--nano-accent);
+  border: 2px solid var(--nano-border);
+  box-shadow: none;
+  border-radius: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.hero-btn:hover {
+  background: var(--nano-accent);
+  color: var(--nano-border);
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0px var(--nano-border);
+}
+
+/* Pet Widget */
+.pet-widget {
+  background: #fff;
+}
+
+.pet-status-badge {
+  background: var(--nano-border);
+  color: #fff;
+  border-radius: 4px;
+}
+
+/* Stat Items */
+.stat-item {
+  background: #fff;
+}
+
+.stat-icon {
+  filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.2));
+}
+
+/* Upcoming List */
+.upcoming-item {
+  border: 1px solid transparent;
+}
+
+.upcoming-item.current {
+  background: #fff;
+  border: 2px solid var(--nano-border);
+  box-shadow: 2px 2px 0px var(--nano-border);
+  border-left: 2px solid var(--nano-border); /* Reset left border */
+}
+
+/* Time Slider */
+.time-slider-card {
+  background: #fff;
+}
+
+.ts-track {
+  border: 2px solid var(--nano-border);
+  border-radius: 999px;
+  background: #eee;
+}
+
+.ts-thumb {
+  background: var(--nano-accent);
+  border: 2px solid var(--nano-border);
+  box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 1024px) {
+  .content-split {
+    grid-template-columns: 1fr; /* Stack columns on tablet */
+  }
+  
+  .right-column {
+    order: -1; /* Put time slider/events on top or keep bottom? Let's keep bottom */
+    order: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .dashboard-header h2 {
+    font-size: 1.5rem;
+    transform: none;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .content {
+    padding: 16px;
+  }
+}
+
+/* Topbar & Navigation */
+.topbar {
+  background: #fff;
+  border-bottom: 2px solid var(--nano-border);
+  box-shadow: 0 4px 0px rgba(0,0,0,0.05);
+  backdrop-filter: none;
+}
+
+.topbar h1 {
+  color: var(--nano-text);
+  text-shadow: none;
+  font-family: 'Courier New', monospace;
+  letter-spacing: -1px;
+}
+
+.topbar nav button,
+.topbar > button {
+  background: #fff;
+  border: 2px solid var(--nano-border);
+  color: var(--nano-text);
+  box-shadow: 2px 2px 0px var(--nano-border);
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.topbar nav button:hover,
+.topbar > button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0px var(--nano-border);
+  background: var(--nano-accent);
+}
+
+.topbar nav button.active {
+  background: var(--nano-border);
+  color: #fff;
+  box-shadow: none;
+  transform: translate(2px, 2px);
+}
+
+/* Side Drawer */
+.side-drawer {
+  border-right: 2px solid var(--nano-border);
+  background: #fff;
+}
+
+.side-drawer .drawer-header {
+  border-bottom: 2px solid var(--nano-border);
+}
+
+.side-drawer .drawer-nav button.active {
+  background: var(--nano-accent);
+  color: var(--nano-text);
+  border: 2px solid var(--nano-border);
+  box-shadow: 2px 2px 0px var(--nano-border);
+}
+
+/* Focus World */
+.focus-world {
+  border: 3px solid var(--nano-border) !important;
+  background: #fff !important;
+  box-shadow: 6px 6px 0px var(--nano-border);
+  border-radius: var(--nano-radius);
+}
+
+.focus-world .timer {
+  color: var(--nano-text);
+  text-shadow: 2px 2px 0px var(--nano-accent);
+  font-family: 'Courier New', monospace;
+}
+
+.focus-world button {
+  border: 2px solid var(--nano-border);
+  box-shadow: 4px 4px 0px var(--nano-border);
+  color: #fff;
+  background: var(--nano-punk);
+}
+
+.focus-world button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--nano-border);
+}
+
+/* Calendar View Overrides */
+.apple-cal .ac-body {
+  border: 2px solid var(--nano-border) !important;
+  border-radius: var(--nano-radius) !important;
+  background: #fff !important;
+}
+
+.apple-cal .ac-gutter {
+  background: #f1f5f9 !important;
+  border-right: 2px solid var(--nano-border) !important;
+}
+
+.apple-cal .ac-gutter-hour {
+  color: var(--nano-text) !important;
+  font-weight: 600;
+}
+
+.apple-cal .ac-hour-line {
+  background: var(--nano-border) !important;
+  opacity: 0.1;
+}
+
+.apple-cal .ac-event {
+  background: #fff !important;
+  border: 2px solid var(--nano-border) !important;
+  border-left: 4px solid var(--nano-punk) !important;
+  border-radius: 4px !important;
+  box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+}
+
+.apple-cal .ac-event-title {
+  color: var(--nano-text) !important;
+  font-weight: 700;
+}
+
+.apple-cal .ac-event-time {
+  color: #64748b !important;
+}
+
+.calendar-nav {
+  border: 2px solid var(--nano-border) !important;
+  box-shadow: 4px 4px 0px var(--nano-border);
+}
+
+.calendar-nav .nav-btn,
+.calendar-nav .today-btn {
+  border: 2px solid var(--nano-border) !important;
+  background: #fff !important;
+  color: var(--nano-text) !important;
+  box-shadow: 2px 2px 0px var(--nano-border);
+}
+
+.calendar-nav .nav-btn:hover,
+.calendar-nav .today-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px var(--nano-border);
+  background: var(--nano-accent) !important;
+}
+
+.add-event-form {
+  border: 2px solid var(--nano-border) !important;
+  box-shadow: 4px 4px 0px var(--nano-border);
+}
+
+.add-event-form .save-btn {
+  background: var(--nano-punk) !important;
+  border: 2px solid var(--nano-border) !important;
+  color: #fff !important;
+  box-shadow: 2px 2px 0px var(--nano-border);
+}
+
+.add-event-form .cancel-btn {
+  background: #fff !important;
+  border: 2px solid var(--nano-border) !important;
+  color: var(--nano-text) !important;
+  box-shadow: 2px 2px 0px var(--nano-border);
+}
+
+/* Tasks View Overrides */
+.tasks li {
+  background: #fff !important;
+  border: 2px solid var(--nano-border) !important;
+  border-radius: var(--nano-radius) !important;
+  box-shadow: 2px 2px 0px var(--nano-border);
+  margin-bottom: 16px;
+}
+
+.tasks li:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0px var(--nano-border);
+  background: #fff !important;
+}
+
+.tasks li::before {
+  display: none; /* Remove gradient strip */
+}
+
+.tasks li input[type="checkbox"] {
+  accent-color: var(--nano-punk);
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--nano-border);
+}
+
+/* Mood & Notes Overrides */
+.mood-indicator {
+  background: #fff !important;
+  border: 2px solid var(--nano-border) !important;
+  box-shadow: 2px 2px 0px var(--nano-border);
+}
+
+.xp-bar {
+  background: #eee !important;
+  border: 1px solid var(--nano-border);
+  height: 12px;
+}
+
+.xp-bar-fill {
+  border-right: 1px solid var(--nano-border);
+}
+
+.note-card {
+  background: #fff !important;
+  border: 2px solid var(--nano-border) !important;
+  box-shadow: 4px 4px 0px var(--nano-border);
+  border-radius: var(--nano-radius) !important;
+}
+
+.note-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--nano-border);
+}
+
+.note-card h3 {
+  color: var(--nano-text) !important;
+}

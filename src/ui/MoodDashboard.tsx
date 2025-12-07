@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { getMoodFromXP, getMoodEmoji, getMoodLabel, MoodState } from './Character'
+import { focusAPI } from '../lib/api'
 
 interface WeekRecord {
   weekStart: string
@@ -27,8 +28,7 @@ export function MoodDashboard() {
 
   const loadStats = async () => {
     try {
-      const res = await fetch('/api/focus/stats?userId=demo')
-      const data = await res.json()
+      const data = await focusAPI.getStats('demo')
       setStats(data)
       
       // 從 localStorage 讀取歷史紀錄
@@ -68,10 +68,10 @@ export function MoodDashboard() {
 
   // 心情階段說明
   const moodStages = [
-    { min: 0, max: 500, mood: 'anxious' as MoodState, label: '焦慮、憂鬱', color: '#ef4444' },
-    { min: 500, max: 1200, mood: 'calm' as MoodState, label: '平靜、悠閒', color: '#3b82f6' },
-    { min: 1200, max: 2100, mood: 'happy' as MoodState, label: '開心、滿足', color: '#10b981' },
-    { min: 2100, max: 2500, mood: 'excited' as MoodState, label: '亢奮、十分滿足', color: '#ec4899' }
+    { min: 0, max: 500, mood: 'anxious', label: '焦慮、憂鬱', color: '#ef4444' },
+    { min: 500, max: 1200, mood: 'calm', label: '平靜、悠閒', color: '#3b82f6' },
+    { min: 1200, max: 2100, mood: 'happy', label: '開心、滿足', color: '#10b981' },
+    { min: 2100, max: 2500, mood: 'excited', label: '亢奮、十分滿足', color: '#ec4899' }
   ]
 
   return (

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react'
 
 // ===== Types & Interfaces =====
-export type MoodState = 'focus' | 'flow' | 'tired' | 'zen'
+export type MoodState = 'anxious' | 'calm' | 'happy' | 'excited'
 
 export interface CharacterAppearance {
   gender: 'male' | 'female'
@@ -36,27 +36,27 @@ export const DEFAULT_NPC_APPEARANCES: CharacterAppearance[] = [
 
 // ===== Helper Functions =====
 export function getMoodFromXP(xp: number): MoodState {
-  if (xp > 2000) return 'zen'
-  if (xp > 1000) return 'flow'
-  if (xp > 500) return 'focus'
-  return 'tired'
+  if (xp >= 2100) return 'excited'
+  if (xp >= 1200) return 'happy'
+  if (xp >= 500) return 'calm'
+  return 'anxious'
 }
 
 export function getMoodEmoji(mood: MoodState): string {
   switch (mood) {
-    case 'zen': return '🎸'
-    case 'flow': return '🎹'
-    case 'focus': return '🎤'
-    case 'tired': return '🚬' // Nana vibe
+    case 'excited': return '🎸'
+    case 'happy': return '🎹'
+    case 'calm': return '☕'
+    case 'anxious': return '🚬'
   }
 }
 
 export function getMoodLabel(mood: MoodState): string {
   switch (mood) {
-    case 'zen': return '靈魂共鳴'
-    case 'flow': return '極致演奏'
-    case 'focus': return '專注練習'
-    case 'tired': return '需要休息'
+    case 'excited': return '熱血沸騰'
+    case 'happy': return '心情愉悅'
+    case 'calm': return '平靜安穩'
+    case 'anxious': return '焦慮不安'
   }
 }
 
