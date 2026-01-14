@@ -29,12 +29,33 @@
   --md-sys-shape-corner-medium: 12px;
   --md-sys-shape-corner-large: 16px;
   --md-sys-shape-corner-extra-large: 28px;
+  --md-sys-animation-speed: 300ms;
+  --md-sys-elevation-anim: 0 6px 20px rgba(0,0,0,0.12);
 }
 
 body {
   background: var(--md-sys-color-surface) !important;
   color: var(--md-sys-color-on-surface) !important;
   font-family: 'Roboto', 'Inter', system-ui, sans-serif;
+}
+
+/* Theme animation keyframes */
+@keyframes md-float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes md-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(103,80,164,0.18); }
+  70% { box-shadow: 0 10px 30px rgba(103,80,164,0.06); }
+  100% { box-shadow: 0 0 0 0 rgba(103,80,164,0); }
+}
+
+@keyframes md-pop {
+  0% { transform: scale(0.985); opacity: 0.98; }
+  50% { transform: scale(1.01); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 /* Reset Nano/Glass styles & Apply Material Card */
@@ -45,13 +66,14 @@ body {
   box-shadow: var(--md-sys-elevation-1) !important;
   border-radius: var(--md-sys-shape-corner-medium) !important;
   color: var(--md-sys-color-on-surface) !important;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition: box-shadow var(--md-sys-animation-speed) ease, transform var(--md-sys-animation-speed) ease;
   margin-bottom: 0;
 }
 
 .glass-card:hover, .stat-item:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow: var(--md-sys-elevation-2) !important;
+  animation: md-pop 240ms ease;
 }
 
 /* Topbar (AppBar) */
@@ -86,7 +108,7 @@ button, .hero-btn, .save-btn, .add-event-btn, .ts-btn {
   letter-spacing: 0.1px;
   padding: 10px 24px !important;
   cursor: pointer;
-  transition: box-shadow 0.2s ease, background 0.2s ease;
+  transition: box-shadow var(--md-sys-animation-speed) ease, background var(--md-sys-animation-speed) ease, transform var(--md-sys-animation-speed) ease;
 }
 
 button:hover, .hero-btn:hover, .save-btn:hover {
@@ -94,6 +116,11 @@ button:hover, .hero-btn:hover, .save-btn:hover {
   background: #523e8a !important;
   transform: none !important;
 }
+
+.animated-btn:active { transform: translateY(1px) scale(0.997); }
+
+/* subtle attention pulse for primary actions */
+.hero-btn.pulse { animation: md-pulse 2500ms infinite; }
 
 /* Secondary/Text Buttons */
 .cancel-btn, .nav-btn, .today-btn, .text-btn {
@@ -214,6 +241,10 @@ button:hover, .hero-btn:hover, .save-btn:hover {
   background: #f5f5f5 !important;
   transform: none !important;
 }
+
+.tasks li {
+  transition: transform var(--md-sys-animation-speed) ease, background var(--md-sys-animation-speed) ease;
+}
 .tasks li input[type="checkbox"] {
   accent-color: var(--md-sys-color-primary);
   width: 20px;
@@ -280,6 +311,14 @@ input[type="text"]:focus, input[type="date"]:focus, select:focus, .ts-quote-inpu
   box-shadow: var(--md-sys-elevation-3) !important;
 }
 
+/* compact mode */
+.compact body, .compact .glass-card, .compact .side-drawer, .compact .tasks li {
+  font-size: 0.92rem !important;
+}
+.compact .glass-card, .compact .stat-item, .compact .tasks li { padding: 8px !important; }
+.compact .topbar { padding: 8px 12px !important; margin-bottom: 12px; }
+.compact button { padding: 6px 12px !important; }
+
 /* Time Slider */
 .ts-track {
   background: #e0e0e0 !important;
@@ -330,3 +369,23 @@ h2, h3, h4 {
 .xp-text-calm { color: #3b82f6 !important; }
 .xp-text-happy { color: #10b981 !important; }
 .xp-text-excited { color: #ec4899 !important; }
+
+/* Dark theme overrides */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --md-sys-color-surface: #0f0c13;
+    --md-sys-color-on-surface: #eae6ef;
+    --md-sys-color-surface-container: #16121a;
+    --md-sys-color-outline: #9a8fb6;
+    --md-sys-elevation-1: 0 1px 3px rgba(0,0,0,0.6);
+    --md-sys-elevation-2: 0 6px 16px rgba(0,0,0,0.6);
+  }
+}
+
+/* Optional explicit dark class */
+:root[data-theme='dark'], .dark {
+  --md-sys-color-surface: #0f0c13;
+  --md-sys-color-on-surface: #eae6ef;
+  --md-sys-color-surface-container: #16121a;
+  --md-sys-color-outline: #9a8fb6;
+}
